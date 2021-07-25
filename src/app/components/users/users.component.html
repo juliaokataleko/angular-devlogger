@@ -1,0 +1,117 @@
+<button (click)="showUserForm = !showUserForm" 
+class="btn form-control btn-dark mb-3">Add User</button>
+
+<div class="card card-body" *ngIf="showUserForm">
+    <h2>Add User</h2>
+    <form #userForm="ngForm" 
+    (ngSubmit)="onSubmit(userForm)" class="row">
+        <div class="form-group col-md-4">
+            <label>First Name</label>
+            <input 
+            [(ngModel)]="user.firstName" 
+            [ngClass]="{'is-invalid':userFirstName.errors && 
+            userFirstName.touched}"
+            #userFirstName="ngModel"
+            required
+            minlength="2"
+            type="text" 
+            class="form-control" name="firstName">
+            <!-- <span class="text-success">{{ user.firstName }}</span> -->
+            <div [hidden]="!userFirstName.errors?.required" class="invalid-feedback">
+                First name required
+            </div>
+            <div [hidden]="!userFirstName.errors?.minlength" class="invalid-feedback">
+                Must be at least 2 characters
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label>Last Name</label>
+            <input 
+            [(ngModel)]="user.lastName" 
+            [ngClass]="{'is-invalid':userLastName.errors && 
+            userLastName.touched}"
+            #userLastName="ngModel"
+            required
+            minlength="2"
+            type="text" 
+            class="form-control" name="lastName">
+            <!-- <span class="text-success">{{ user.firstName }}</span> -->
+            <div [hidden]="!userLastName.errors?.required" class="invalid-feedback">
+                Last name required
+            </div>
+            <div [hidden]="!userLastName.errors?.minlength" class="invalid-feedback">
+                Must be at least 2 characters
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label>Email</label>
+            <input 
+            [(ngModel)]="user.email" 
+            [ngClass]="{'is-invalid':userEmail.errors && 
+            userEmail.touched}"
+            #userEmail="ngModel"
+            required
+            pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+            type="text" 
+            class="form-control" name="email">
+            <!-- <span class="text-success">{{ user.firstName }}</span> -->
+            <div [hidden]="!userEmail.errors?.required" class="invalid-feedback">
+                Email required
+            </div>
+            <div [hidden]="!userEmail.errors?.pattern" class="invalid-feedback">
+                Please provide a valid email
+            </div>
+        </div>
+
+        <div class="form-group col-12">
+
+            <button 
+            [disabled]="!userForm.form.valid" 
+            class="btn bg-light btn-block">Add user</button>
+            
+        </div>
+    </form>
+</div>
+
+<h3 class="mt-2">Users</h3>
+
+<ul class="list-unstyled" *ngIf="loaded && users?.length > 0">
+    <li *ngFor="let user of users" class="card card-body mb-4" [class.bg-light]="user.isActive">
+        <!-- [style.border]="user.isActive ? '3px solid green' : ''" -->
+        
+        <h4 class="d-flex justify-content-between"> 
+            <span>
+                <!-- Property binding -->
+                <span [textContent]="user.firstName"></span> 
+                {{ user.lastName | lowercase }}
+            </span>
+            
+            <small>
+                <button (click)="user.hide = !user.hide;" 
+                class="btn btn-dark btn-sm">
+                    <i [ngClass]="user.hide ? 'fa fa-plus' : 'fa fa-minus'"></i>
+                </button>
+            </small>
+            
+        </h4>
+        <ul class="list-group" *ngIf="!user.hide">
+            <li class="list-group-item">Email: {{ user.email }}</li>
+            <li class="list-group-item">
+                Joined: {{ user.registered | date:"fullDate" }}
+            </li>
+            <!-- <li class="list-group-item">
+                <pre>
+                     Projects: {{ 5 | number:"1.4" }}
+                </pre>
+            </li> -->
+        </ul>
+
+    </li>
+</ul>
+
+<!-- <ng-template #noUsers><h4 class="danger">No users found</h4></ng-template> -->
+
+<h4 *ngIf="users?.length == 0" class="danger">No users found</h4>
+<h4 *ngIf="!loaded" class="loading">Loading users...</h4>

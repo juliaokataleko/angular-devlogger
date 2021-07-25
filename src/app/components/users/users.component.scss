@@ -1,0 +1,24 @@
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li.users {
+        border-bottom: 1px solid #fff;
+        padding-bottom: 12px;
+    }
+}
+
+.danger {
+    color: #e72828;
+    font-size: 25px;
+}
+
+.loading {
+    color: #0ca73b;
+    font-size: 25px;
+}
+
+.big-text {
+    text-transform: uppercase;
+}
